@@ -21,11 +21,6 @@ export default function About() {
             Creemos en el trato directo, en cumplir lo que prometemos y en construir relaciones de confianza a
             largo plazo con cada comunidad, negocio o particular con el que trabajamos.
           </p>
-
-          <div className="about__placeholder-note">
-            [POR DEFINIR] Historia de la empresa, filosofía específica y forma de trabajar — pendiente de
-            información facilitada por ROOLFiX.
-          </div>
         </Reveal>
       </div>
     </section>

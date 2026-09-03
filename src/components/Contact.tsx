@@ -5,17 +5,40 @@ import { MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from './icons'
 import Reveal from './Reveal'
 import './Contact.css'
 
-type Status = 'idle' | 'not-configured'
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdeozrgp'
+
+type Status = 'idle' | 'sending' | 'success' | 'error'
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>('idle')
 
-  // El envío del formulario todavía no está conectado a ningún backend
-  // (Formspree / Resend / Supabase / email propio — ver CLAUDE.md §15).
-  // No enviar datos a ningún servicio externo hasta que se decida cuál usar.
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setStatus('not-configured')
+    const form = event.currentTarget
+
+    if (!FORMSPREE_ENDPOINT) {
+      setStatus('error')
+      return
+    }
+
+    setStatus('sending')
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      })
+
+      if (response.ok) {
+        setStatus('success')
+        form.reset()
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -109,13 +132,18 @@ export default function Contact() {
                 <textarea id="message" name="message" rows={4} required />
               </div>
 
-              <button type="submit" className="btn btn-primary contact__submit">
-                Solicitar presupuesto
+              <button type="submit" className="btn btn-primary contact__submit" disabled={status === 'sending'}>
+                {status === 'sending' ? 'Enviando…' : 'Solicitar presupuesto'}
               </button>
 
-              {status === 'not-configured' && (
-                <p className="contact__status" role="status">
-                  El formulario todavía no está conectado. Mientras tanto, contáctanos por teléfono o email.
+              {status === 'success' && (
+                <p className="contact__status contact__status--success" role="status">
+                  ¡Gracias! Hemos recibido tu solicitud y te contactaremos pronto.
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="contact__status contact__status--error" role="status">
+                  No se ha podido enviar. Contáctanos por teléfono o email mientras lo revisamos.
                 </p>
               )}
             </form>

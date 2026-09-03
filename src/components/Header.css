@@ -79,11 +79,17 @@
   justify-content: center;
   width: 42px;
   height: 42px;
+  flex-shrink: 0;
   border-radius: 10px;
   border: 1px solid var(--color-border);
   background: var(--color-white);
   color: var(--color-ink);
   cursor: pointer;
+}
+
+.header__menu-btn svg {
+  width: 22px;
+  height: 22px;
 }
 
 .header__mobile {

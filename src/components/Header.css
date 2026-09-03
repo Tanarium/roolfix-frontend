@@ -109,14 +109,14 @@
   .header__mobile {
     display: block;
     max-height: 0;
-    overflow: hidden;
+    overflow-y: auto;
     background: var(--color-white);
     border-top: 1px solid transparent;
     transition: max-height 280ms ease, border-color var(--transition);
   }
 
   .header__mobile.is-open {
-    max-height: 420px;
+    max-height: min(560px, calc(100vh - 76px));
     border-color: var(--color-border);
   }
 
@@ -146,9 +146,5 @@
 
   .header__mobile-actions .btn {
     width: 100%;
-  }
-
-  .header__mobile-actions .header__login {
-    text-align: center;
   }
 }

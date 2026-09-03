@@ -85,7 +85,7 @@ export default function Header() {
           <a href="#contacto" className="btn btn-primary" onClick={() => setIsMenuOpen(false)}>
             Contactar
           </a>
-          <a href={APP_URL} className="header__login">
+          <a href={APP_URL} className="btn btn-secondary">
             Iniciar sesión
           </a>
         </div>
